@@ -28,7 +28,12 @@ func (s *Suite) Test(t *testing.T, exp func(*Experiment)) {
 		exp(e)
 		for _, trl := range e.Trials {
 			if trl.result != trl.Expected {
-				sigfmt := fmt.Sprintf(trl.signature, trl.Factors...)
+				var sigfmt string
+				if len(trl.Factors) > 0 {
+					sigfmt = fmt.Sprintf(trl.signature, trl.Factors...)
+				} else {
+					sigfmt = fmt.Sprintf(trl.signature)
+				}
 				logv := fmt.Sprintf("\t%s: %v\n", sigfmt, trl.result)
 				loge := fmt.Sprintf("\tExpected: %v\n", trl.Expected)
 				t.Error(logv + loge)
