@@ -56,7 +56,7 @@ func TestSuiteTest(t *testing.T) {
 		// Verify Sum return value.
 		e.RegisterResult(0, func(f ...interface{}) (r *Result) {
 			val := s.Sum(f[0].(int), f[1].(int)) == f[2].(int)
-			sig := "s.Sum(\"%v\", \"%v\") == \"%v\""
+			sig := "s.Sum(%v, %v) == %v"
 			r = NewResult(val, sig)
 			return
 		})
