@@ -24,9 +24,9 @@ func NewSuite(e ...*Experiment) (s *Suite) {
 // a mismatched value for a Trial, it reports an error following the
 // signature and factors on the Trial failed.
 func (s *Suite) Test(t *testing.T, exp func(*Experiment)) {
-	for _, e := range s.Experiments {
+	for ie, e := range s.Experiments {
 		exp(e)
-		for _, trl := range e.Trials {
+		for it, trl := range e.Trials {
 			if trl.result != trl.Expected {
 				var sigfmt string
 				if len(trl.Factors) > 0 {
@@ -34,9 +34,10 @@ func (s *Suite) Test(t *testing.T, exp func(*Experiment)) {
 				} else {
 					sigfmt = fmt.Sprintf(trl.signature)
 				}
+				logh := fmt.Sprintf("\tExperiment %v, Trial %v\n", ie, it)
 				logv := fmt.Sprintf("\t%s: %v\n", sigfmt, trl.result)
 				loge := fmt.Sprintf("\tExpected: %v\n", trl.Expected)
-				t.Error(logv + loge)
+				t.Error(logh + logv + loge)
 			}
 		}
 	}
